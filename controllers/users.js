@@ -7,15 +7,16 @@ const NoAuthError = require('../errors/noAuthError');
 const DuplicateKeyError = require('../errors/duplicateKeyError');
 
 const getUserById = (req, res, next) => {
-  const { userId } = req.params;
-  User.findById(userId)
-    .orFail(() => {
-      throw new NotFoundError('No user with matching ID');
-    })
-    .then((selectedUser) => res.status(200).send(selectedUser))
-    .catch((err) => {
-      next(err);
-    });
+  User.findById(req.user._id)
+  .then((users) => {
+    if (!users) {
+      throw new NotFoundError('No users to display');
+    }
+    return res.status(200).send({ data: users });
+  })
+  .catch((err) => {
+    next(err);
+  });
 };
 
 const createUser = (req, res, next) => {
