@@ -1,4 +1,3 @@
-const article = require('../models/article');
 const Article = require('../models/article');
 
 const getArticles = (req, res) => {
