@@ -8,11 +8,12 @@ const helmet = require('helmet');
 // middleware
 const { requestLogger, errorLogger } = require('./middleware/logger');
 const auth = require('./middleware/auth');
+const error = require('./middleware/error');
 
-const { PORT = 3000, MONGO_URL, NODE_ENV } = process.env;
+const { PORT = 3000 } = process.env;
 const app = express();
 
-mongoose.connect(NODE_ENV === 'production' ? MONGO_URL : 'mongodb://localhost:27017/news');
+mongoose.connect('mongodb://localhost:27017/news');
 
 app.use(cors());
 app.options('*', cors());
@@ -46,6 +47,9 @@ app.use('*', function(req, res, next){
 
 // celebrate error handler
 app.use(errors());
+
+// middleware
+app.use(error);
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
