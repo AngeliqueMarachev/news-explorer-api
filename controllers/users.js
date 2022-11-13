@@ -12,10 +12,13 @@ const getUserById = (req, res, next) => {
     if (!users) {
       throw new NotFoundError('No users to display');
     }
-    return res.status(200).send({ data: users });
+    res.send({ data: users });
   })
   .catch((err) => {
-    next(err);
+    if (err.name === 'CastError') {
+      return next(new BadRequestError('Invalid user ID'));
+    }
+    return next(err);
   });
 };
 
@@ -42,7 +45,9 @@ const createUser = (req, res, next) => {
     });
 };
 
-const login = (req, res) => {
+const { JWT_SECRET = 'secret-code' } = process.env;
+
+const login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
     .then((user) => {
