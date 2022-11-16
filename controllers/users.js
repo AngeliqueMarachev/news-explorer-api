@@ -8,11 +8,11 @@ const DuplicateKeyError = require('../errors/duplicateKeyError');
 
 const getUserById = (req, res, next) => {
   User.findById(req.user._id)
-  .then((users) => {
-    if (!users) {
+  .then((user) => {
+    if (!user) {
       throw new NotFoundError('No users to display');
     }
-    res.send({ data: users });
+    res.send({ data: user });
   })
   .catch((err) => {
     if (err.name === 'CastError') {

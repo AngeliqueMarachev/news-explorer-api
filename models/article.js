@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const validateUrl = require('../middleware/linkValidation');
+// const validateUrl = require('../middleware/linkValidation');
 
 const articleSchema = new mongoose.Schema({
   keyword: {
@@ -27,7 +27,8 @@ const articleSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(value) {
-        validateUrl(value);
+         // validateUrl(value);
+        return /(http:\/\/|https:\/\/)[www.]?[a-zA-z0-9.]+\/?#?/i.test(value);
       },
     },
   },
@@ -36,7 +37,8 @@ const articleSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(value) {
-        validateUrl(value);
+        // validateUrl(value);
+        return /(http:\/\/|https:\/\/)[www.]?[a-zA-z0-9.]+\/?#?/i.test(value);
       },
     },
   },

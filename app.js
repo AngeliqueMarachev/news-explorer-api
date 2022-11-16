@@ -13,7 +13,14 @@ const error = require('./middleware/error');
 const { PORT = 3000 } = process.env;
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/news');
+// mongoose.connect('mongodb://localhost:27017/news');
+
+const {
+  MONGO_URL = 'mongodb://localhost:27017/news',
+  NODE_ENV,
+} = process.env;
+
+  mongoose.connect(NODE_ENV === 'production' ? MONGO_URL : 'mongodb://localhost:27017/news');
 
 app.use(cors());
 app.options('*', cors());

@@ -17,13 +17,13 @@ const authValidation = Joi.object()
   })
   .unknown(true);
 
-  router.get(
-    '/',
-    celebrate({
-      headers: authValidation,
-    }),
-    getArticles
-  );
+router.get(
+  '/',
+  celebrate({
+    headers: authValidation,
+  }),
+  getArticles
+);
 
 router.post(
   '/',
