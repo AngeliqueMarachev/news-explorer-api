@@ -5,6 +5,7 @@ const User = require('../models/user');
 const NotFoundError = require('../errors/notFoundError');
 const NoAuthError = require('../errors/noAuthError');
 const DuplicateKeyError = require('../errors/duplicateKeyError');
+const user = require('../models/user');
 
 const getUserById = (req, res, next) => {
   User.findById(req.user._id)
@@ -38,8 +39,8 @@ const createUser = (req, res, next) => {
       name
     }))
     .then((user) => {
-      const { password, ...userObj } = user.toObject()
-      res.status(201).send(userObj);
+      const newUser = { name:user.name, email:user.email }
+      res.status(201).send(newUser);
       })
     .catch((err) => {
       next(err);
