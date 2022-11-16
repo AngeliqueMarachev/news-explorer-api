@@ -23,7 +23,7 @@ const getUserById = (req, res, next) => {
 };
 
 const createUser = (req, res, next) => {
-  const { email, password } = req.body;
+  const { email, password, name } = req.body;
   User.findOne({ email })
     .then((user) => {
       if (user) {
@@ -35,6 +35,7 @@ const createUser = (req, res, next) => {
     .then((hash) => User.create({
       email,
       password: hash,
+      name
     }))
     .then((user) => {
       const { password, ...userObj } = user.toObject()
