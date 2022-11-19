@@ -13,6 +13,7 @@ const getArticles = (req, res, next) => {
 
 const createArticle = (req, res, next) => {
   const { keyword, title, text, date, source, link, image } = req.body;
+
   Article.create({ keyword, title, text, date, source, link, image, owner: req.user._id })
     .then((article) => article.populate('owner'))
     .then((article) => {
@@ -22,11 +23,12 @@ const createArticle = (req, res, next) => {
       if (err.name === 'ValidationError') {
         return next(new BadRequestError('Invalid inputs'));
       }
+      return next(err);
     });
-  return next(err);
 };
 
 const deleteArticle = (req, res, next) => {
+
   Article.findById(req.params.articleId)
     .orFail()
     .then((article) => {
