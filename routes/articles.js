@@ -9,21 +9,9 @@ function validateUrl(string) {
     throw new Error('Invalid URL');
   }
   return string;
-}
+};
 
-const authValidation = Joi.object()
-  .keys({
-    authorization: Joi.string().required(),
-  })
-  .unknown(true);
-
-router.get(
-  '/',
-  celebrate({
-    headers: authValidation,
-  }),
-  getArticles
-);
+router.get('/', getArticles);
 
 router.post(
   '/',
@@ -35,9 +23,8 @@ router.post(
       date: Joi.string().required(),
       source: Joi.string().required(),
       link: Joi.string().required().custom(validateUrl),
-      image: Joi.string().required(),
+      image: Joi.string().required().custom(validateUrl),
     }),
-    headers: authValidation,
   }),
   createArticle
 );
@@ -48,7 +35,6 @@ router.delete(
     params: Joi.object().keys({
       articleId: Joi.string().hex().length(24),
     }),
-    headers: authValidation,
   }),
   deleteArticle
 );

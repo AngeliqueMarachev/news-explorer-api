@@ -3,4 +3,4 @@
 This is the backend part of my final project
 
 The API server can be found here:
-https://api.angelique.news.students.nomoredomainssbs.ru
+https://api.angelique.students.nomoredomainssbs.ru

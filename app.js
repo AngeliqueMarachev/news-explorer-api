@@ -7,13 +7,14 @@ const helmet = require('helmet');
 
 // middleware
 const { requestLogger, errorLogger } = require('./middleware/logger');
-const auth = require('./middleware/auth');
 const error = require('./middleware/error');
+
+const NotFoundError = require('./errors/notFoundError');
+
+const mainRoute = require('./routes/index')
 
 const { PORT = 3000 } = process.env;
 const app = express();
-
-// mongoose.connect('mongodb://localhost:27017/news');
 
 const {
   MONGO_URL = 'mongodb://localhost:27017/news',
@@ -28,29 +29,15 @@ app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const NotFoundError = require('./errors/notFoundError');
-
-//routes
-const users = require('./routes/users')
-const articles = require('./routes/articles');
-const signin = require('./routes/signin');
-const signup = require('./routes/signup');
-
 app.use(requestLogger);
 
-app.use('/signin', signin);
-app.use('/signup', signup);
-
-app.use(errorLogger);
-
-app.use(auth);
-
-app.use('/users', users);
-app.use('/articles', articles);
+app.use('/', mainRoute);
 
 app.use('*', function(req, res, next){
   next(new NotFoundError('Requested resource not found'))
 });
+
+app.use(errorLogger);
 
 // celebrate error handler
 app.use(errors());
